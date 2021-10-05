@@ -13,6 +13,8 @@ node_modules/
 /build
 
 # misc
+seeder.js
+seedData
 .DS_Store
 .env
 .env.local

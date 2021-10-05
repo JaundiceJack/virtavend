@@ -7,6 +7,7 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 // Import Components
 import Home from './home';
 import Products from './products.js';
+import Product from './product.js';
 //import Login  from './login';
 //import Forgot from './forgot';
 //import Reset  from './reset';
@@ -20,7 +21,9 @@ const Routes = () => {
   return (
     <main className="flex-grow flex flex-col">
       <Switch>
-        <Route exact path="/" component={Products} />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/merch" component={Products} />
+        <Route path="/merch/:id" component={Product} />
         {/*<Route exact path="/login"  component={Login} />*/}
         {/*<Route exact path="/forgot" component={Forgot} />*/}
         {/*<Route path="/reset/:token" component={Reset} />*/}

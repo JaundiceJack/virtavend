@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.spin {
+  animation: spin 2s ease-in-out 0s infinite forwards;
+}
+
+@keyframes spin {
+  from {transform: rotate(0deg) scale(1); color: #f71}
+  50% {transform: rotate(90deg) scale(1.25); color: #17f}
+  to {transform: rotate(180deg) scale(1); color: #f71}
+}
