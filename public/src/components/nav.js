@@ -7,7 +7,7 @@ const Nav = () => {
                  "duration-150 hover:scale-105 ";
 
   return (
-    <nav className={"sticky top-0 z-50 mx-4 bg-gradient-to-b from-gray-900 " +
+    <nav className={"sticky top-0 z-50 mx-4 sm:mx-12 bg-gradient-to-b from-gray-900 " +
                     "to-gray-800 shadow-md h-16 rounded-b-lg flex items-center"}>
       <Link to="/" className="flex flex-row items-center group relative">
         <img src="//live.staticflickr.com/65535/51358278133_0326d83fa7_s.jpg"
@@ -30,10 +30,10 @@ const Nav = () => {
           <a href="#" className={linkCs}>Sign In</a>
         </div>
       </div>
-      <a href="#"
+      <Link to='/cart'
          className="self-center transform duration-150 hover:scale-110"
          title="Your Shopping Cart">
-         <FaShoppingCart className="mx-4 text-2xl text-blue-100" /></a>
+         <FaShoppingCart className="mx-4 text-2xl text-blue-100" /></Link>
     </nav>
   );
 };

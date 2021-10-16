@@ -1,10 +1,10 @@
 import { FaStarHalfAlt, FaStar, FaRegStar } from 'react-icons/fa'
 
-const RatingB = ({value, numReviews}) => {
+const RatingB = ({value, textColor, numReviews, extraClasses}) => {
   const stars = [1,2,3,4,5];
 
   return (
-    <div className="flex flex-row items-center">
+    <div className={"flex flex-row items-center py-4 px-6 "+extraClasses}>
 
       <div className="flex flex-row font-semibold text-yellow-400 justify-center mr-2">
         {stars.map( (star, i) => {
@@ -15,7 +15,7 @@ const RatingB = ({value, numReviews}) => {
         })}
       </div>
 
-      <h3 className="font-semibold text-lg text-gray-800 whitespace-nowrap">
+      <h3 className={"font-semibold text-lg whitespace-nowrap "+textColor}>
         {
           [0, "", null, undefined].indexOf(numReviews) !== -1 ? 'No Reviews' :
           numReviews === 1 ?

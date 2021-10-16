@@ -11,3 +11,34 @@
   50% {transform: rotate(90deg) scale(1.25); color: #17f}
   to {transform: rotate(180deg) scale(1); color: #f71}
 }
+
+.liftoff:hover {
+  transform: perspective(300px) rotateY(-5deg) rotateX(5deg) ;
+}
+
+@media screen and  (max-width: 768px) {
+  .liftoff:hover {
+    transform: none;
+  }
+}
+
+.break-anywhere { overflow-wrap: anywhere; }
+
+.buttonBorder {
+  border-width: 1px 0 0 1px;
+  border-color: rgba(75, 85, 99, var(--tw-border-opacity)) transparent transparent rgba(75, 85, 99, var(--tw-border-opacity));
+}
+.buttonBorder:hover {
+  box-shadow:
+    0px -1px 6px -2px #000,
+    0px 0px 0px 0px #000,
+    0px 0px 0px 0px #000,
+    -2px 0px 6px -2px #000;
+  transform: translateY(-3px);
+  border-width: 1px 1px 0 1px;
+  border-color:
+    rgba(122, 79, 6, var(--tw-border-opacity))
+    rgba(122, 79, 6, var(--tw-border-opacity))
+    rgba(245, 158, 11, var(--tw-border-opacity))
+    rgba(122, 79, 6, var(--tw-border-opacity));
+}

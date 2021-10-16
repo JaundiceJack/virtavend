@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
+        '18': '4.5rem',
         '84': '21rem'
       }
     },
@@ -12,6 +13,9 @@ module.exports = {
     width: ["responsive", "hover", "focus"],
     extend: {
       transform: ['hover', 'focus'],
+      borderWidth: ['hover', 'focus'],
+      display: ['hover', 'focus'],
+      backgroundImage: ['hover', 'focus'],
     },
   },
   plugins: [],
