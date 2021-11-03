@@ -21,4 +21,6 @@ const productSchema = mongoose.Schema({
   countInStock: { type: Number, required: true, default: 0 }
 }, { timestamps: true } );
 
-module.exports = productSchema;
+const Product = mongoose.model('products', productSchema);
+
+module.exports = Product;

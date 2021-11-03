@@ -1,9 +1,9 @@
-import Item from './item.js';
-import { getProducts } from '../../actions/productActions.js';
-import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import Spinner from '../spinner.js';
-import Message from '../message.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../../../actions/productActions.js';
+import Item    from './item.js';
+import Spinner from '../../spinner.js';
+import Message from '../../message.js';
 
 const Products = () => {
   const { products, loading, error } = useSelector(state => state.productList);
@@ -22,7 +22,6 @@ const Products = () => {
           return <Item key={product._id} product={product} />
         })
       }
-
     </div>
   )
 }

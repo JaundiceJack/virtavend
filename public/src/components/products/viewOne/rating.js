@@ -1,10 +1,11 @@
 import { FaStarHalfAlt, FaStar, FaRegStar } from 'react-icons/fa'
 
-const RatingB = ({value, textColor, numReviews, extraClasses}) => {
+const Rating = ({value, numReviews}) => {
   const stars = [1,2,3,4,5];
 
   return (
-    <div className={"flex flex-row items-center py-4 px-6 "+extraClasses}>
+    <div className={"flex flex-row items-center py-4 px-6 bg-gray-800 " +
+      " border-r border-gray-600 font-semibold border-b border-t border-gray-600"}>
 
       <div className="flex flex-row font-semibold text-yellow-400 justify-center mr-2">
         {stars.map( (star, i) => {
@@ -15,7 +16,7 @@ const RatingB = ({value, textColor, numReviews, extraClasses}) => {
         })}
       </div>
 
-      <h3 className={"font-semibold text-lg whitespace-nowrap "+textColor}>
+      <h3 className={"font-semibold text-lg whitespace-nowrap text-white "}>
         {
           [0, "", null, undefined].indexOf(numReviews) !== -1 ? 'No Reviews' :
           numReviews === 1 ?
@@ -28,4 +29,4 @@ const RatingB = ({value, textColor, numReviews, extraClasses}) => {
   )
 }
 
-export default RatingB;
+export default Rating;

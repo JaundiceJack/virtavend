@@ -7,8 +7,7 @@ const Message = ({info, error, warning, success, link=null, extraClasses=""}) =>
                   error   ? "bg-red-300" :
                   warning ? "bg-yellow-300" :
                   success ? "bg-green-300" : "bg-gray-400";
-  const messageClasses = "flex items-center justify-center " +
-                         "w-3/4 md:w-1/2 py-12 self-start " +
+  const messageClasses = "flex items-center justify-center p-2 " +
                          "col-span-full rounded-xl relative " + bgColor;
   return (
     <div className={hide ? "hidden" : (messageClasses+" "+extraClasses)}>

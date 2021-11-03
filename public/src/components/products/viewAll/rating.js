@@ -1,10 +1,11 @@
 import { FaStarHalfAlt, FaStar, FaRegStar } from 'react-icons/fa'
 
-const RatingA = ({value, numReviews}) => {
+const Rating = ({value, numReviews}) => {
   const stars = [1,2,3,4,5];
 
   return (
-    <div className="w-28 p-2 bg-gray-700 text-center">
+    <div className={"flex flex-col items-center justify-center sm:px-0 px-2 py-2 bg-gray-600 " +
+    "transform duration-500 sm:w-28 sm:group-hover:w-0 sm:group-hover:opacity-0 "}>
 
       <div className="flex flex-row font-semibold text-yellow-300 justify-center">
         {stars.map( (star, i) => {
@@ -28,4 +29,4 @@ const RatingA = ({value, numReviews}) => {
   )
 }
 
-export default RatingA;
+export default Rating;

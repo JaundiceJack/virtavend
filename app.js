@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const connect = require('./db.js');
+const connect = require('./db/connection.js');
 const { notFound, errorFound } = require('./middleware/errorMW.js')
 dotenv.config();
 
@@ -13,7 +13,12 @@ app.use(express.json());
 connect();
 
 // Define routes
-app.use('/api/products', require('./routes/api/products.js'));
+app.use('/api/products', require('./routes/paths/products.js'));
+app.use('/api/orders', require('./routes/paths/orders.js'));
+app.use('/api/user', require('./routes/paths/user.js'));
+
+// Set the PayPal ID route
+app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID));
 
 // Error handling middleware
 app.use(notFound);

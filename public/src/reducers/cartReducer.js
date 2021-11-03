@@ -1,7 +1,9 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../actions/types.js';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING_ADDRESS, CART_SAVE_PAYMENT_METHOD } from '../actions/types.js';
 
 const initialCart = {
   items: [],
+  shippingAddress: {},
+  savedPaymentMethod: ''
 }
 
 export const cartReducer = (state = initialCart, action) => {
@@ -21,7 +23,17 @@ export const cartReducer = (state = initialCart, action) => {
       }
       else { return { ...state, items: [...state.items, clickedItem] } };
     case CART_REMOVE_ITEM:
-      return { ...state }
+      return { ...state,
+        items: state.items.filter(item => item.product !== action.payload)
+      }
+    case CART_SAVE_SHIPPING_ADDRESS:
+      return { ...state,
+        shippingAddress: action.payload
+      }
+    case CART_SAVE_PAYMENT_METHOD:
+      return { ...state,
+        savedPaymentMethod: action.payload
+      }
     default:
       return state
   }
