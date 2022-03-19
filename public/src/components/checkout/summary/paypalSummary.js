@@ -1,5 +1,5 @@
-import InfoPanel from '../../infoPanel.js';
-import Spinner from '../../spinner.js';
+import InfoPanel from '../../multipurpose/infoPanel.js';
+import Spinner from '../../multipurpose/spinner.js';
 import { PayPalButton } from 'react-paypal-button-v2';
 
 const PayPalSummary = ({ total, loadingPay, sdkReady, onSuccess }) => {

@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 // Import server actions
 import { addItemToCart, removeItemFromCart } from '../../actions/cartActions.js';
 // Import components
-import Message from '../message.js';
-import Header from '../header.js';
+import Message from '../multipurpose/message.js';
+import Header from '../multipurpose/header.js';
 import Button from '../inputs/button.js';
 import Item from './item.js';
 

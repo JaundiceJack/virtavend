@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { register } from '../../actions/userActions.js';
-import Message from '../message.js';
-import Spinner from '../spinner.js';
+import Message from '../multipurpose/message.js';
+import Spinner from '../multipurpose/spinner.js';
 import Entry from '../inputs/entry.js';
 import Button from '../inputs/button.js';
 

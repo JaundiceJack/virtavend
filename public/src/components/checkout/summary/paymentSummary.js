@@ -1,4 +1,4 @@
-import Header from '../../header.js';
+import Header from '../../multipurpose/header.js';
 
 const PaymentSummary = ({ order }) => {
   return (

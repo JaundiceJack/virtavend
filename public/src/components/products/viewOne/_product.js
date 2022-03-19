@@ -9,8 +9,8 @@ import Stock from './stock';
 import Button from '../../inputs/button.js';
 import Image from './image';
 import AddToCart from './addToCart';
-import Spinner from '../../spinner.js';
-import Message from '../../message.js';
+import Spinner from '../../multipurpose/spinner.js';
+import Message from '../../multipurpose/message.js';
 
 
 const Product = ({ match, history }) => {
@@ -32,7 +32,7 @@ const Product = ({ match, history }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 2xl:mt-7">
             {/* Product Info */}
             <div className="flex flex-col col-span-1 md:col-span-2 2xl:-mt-10 mb-8 2xl:mb-0">
-              <Button text="Go Back" color="yellow" position="t" smallPosition="t" gradientDirection="tl" onClick={onBack} extraClasses="w-28 h-12"/>
+              <Button text="To Merch" color="yellow" position="t" smallPosition="t" gradientDirection="tl" onClick={onBack} extraClasses="w-28 h-12"/>
               <div className={"grid grid-cols-1 sm:grid-cols-2 rounded-b-lg " +
                 "rounded-tr-xl bg-gray-700"}>
                 <Image image={product.image} name={product.name} />

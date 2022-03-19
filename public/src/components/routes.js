@@ -4,7 +4,7 @@
 // Import router stuff
 import { Route, Switch } from 'react-router-dom';
 // Import Components
-import Home from './home.js';
+import Home          from './home/_home.js';
 import Products      from './products/viewAll/_products.js';
 import Product       from './products/viewOne/_product.js';
 import Cart          from './cart/_cart.js';
@@ -13,8 +13,8 @@ import Profile       from './account/profile.js';
 import Register      from './account/register.js';
 import Shipping      from './checkout/shipping/_shipping.js';
 import PaymentMethod from './checkout/payment/_paymentMethod.js';
-import ReviewOrder       from './checkout/summary/_reviewOrder.js';
-import Confirmation  from './checkout/summary/_confirmation.js';
+import OrderReview   from './checkout/summary/_orderReview.js';
+import OrderPay      from './checkout/summary/_orderPay.js';
 
 const Routes = () => {
   return (
@@ -27,10 +27,10 @@ const Routes = () => {
         <Route exact path="/profile"  component={Profile} />
         <Route exact path="/shipping" component={Shipping} />
         <Route exact path="/payment"  component={PaymentMethod} />
-        <Route exact path="/summary"  component={ReviewOrder} />
+        <Route exact path="/summary"  component={OrderReview} />
         <Route path="/merch/:id"      component={Product} />
         <Route path="/cart/:id?"      component={Cart} />
-        <Route path="/order/:id"      component={Confirmation} />
+        <Route path="/order/:id"      component={OrderPay} />
       </Switch>
     </main>
   )

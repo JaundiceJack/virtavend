@@ -21,7 +21,7 @@ const Nav = () => {
         onClick={() => setShowDD(false)}
         className="flex flex-row items-center group relative ml-3">
         <img src="/images/logo.png" alt="Logo" className={
-          "w-14 h-14 rounded-md opacity-100 " +
+          "w-14 h-14 rounded-xl opacity-100 " +
           "group-hover:opacity-0 transition duration-300 border-2 border-yellow-400"
         } />
 

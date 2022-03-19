@@ -4,14 +4,17 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // Import reducers
 import { userLoginReducer, userRegisterReducer,
   userDetailsReducer, userUpdateProfileReducer } from './reducers/userReducers';
-import { productListReducer, productDetailsReducer } from './reducers/productReducers';
+import { productListReducer, productDetailsReducer, productFeaturedReducer, productDealReducer } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducer';
+import { articleDetailsReducer } from './reducers/articleReducers.js';
 import { orderCreateReducer, orderDetailsReducer, ordersListReducer, orderPayReducer } from './reducers/orderReducers';
 
 // Assign the state names to access reducer variables
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  productFeatured: productFeaturedReducer,
+  productDeal: productDealReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -20,7 +23,8 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   ordersList: ordersListReducer,
-  orderPay: orderPayReducer
+  orderPay: orderPayReducer,
+  articleDetails: articleDetailsReducer,
 });
 
 // Get stuff from local storage if returning user

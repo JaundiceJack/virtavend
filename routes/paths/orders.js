@@ -2,7 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const private = require('../../middleware/authMW');
-const { addOrderItems, getOrderById, getOrders, updateOrderToPaid } = require('../actions/orderController.js');
+const { addOrderItems, getOrderById, getOrders, updateOrderToPaid } =
+  require('../actions/orderController.js');
 
 // GET: /api/orders/ | Retrieve all of the user's orders | Private
 // POST api/orders/ | Create a new order | Private

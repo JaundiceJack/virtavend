@@ -25,6 +25,11 @@ const private = trycatch( async (req, res, next) => {
     res.status(401);
     throw new Error("Session has expired.");
   }
-})
+});
+
+// Restrict a route to site administrators
+const adminOnly = trycatch( async (req, res, next) => {
+
+});
 
 module.exports = private;

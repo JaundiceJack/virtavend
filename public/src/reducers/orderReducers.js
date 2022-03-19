@@ -1,8 +1,9 @@
-import { ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL,
-ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_FAIL,
-ORDERS_LIST_REQUEST, ORDERS_LIST_SUCCESS, ORDERS_LIST_FAIL, ORDERS_LIST_RESET,
-ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS, ORDER_PAY_FAIL, ORDER_PAY_RESET
- } from '../actions/types.js';
+import {
+  ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_CREATE_RESET, ORDER_CREATE_ERROR_RESET,
+  ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_FAIL,
+  ORDERS_LIST_REQUEST, ORDERS_LIST_SUCCESS, ORDERS_LIST_FAIL, ORDERS_LIST_RESET,
+  ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS, ORDER_PAY_FAIL, ORDER_PAY_RESET
+} from '../actions/types.js';
 
 const initialOrder = { loading: false, success: false, order: {}, error: null }
 export const orderCreateReducer = (state = initialOrder, action) => {
@@ -13,6 +14,10 @@ export const orderCreateReducer = (state = initialOrder, action) => {
       return { ...state, loading: false, success: true, order: action.payload }
     case ORDER_CREATE_FAIL:
       return { ...state, loading: false, success:false, error: action.payload }
+    case ORDER_CREATE_RESET:
+      return { loading: false, success: false, order: {}, error: null }
+    case ORDER_CREATE_ERROR_RESET:
+      return { ...state, error: null }
     default:
       return state
   }

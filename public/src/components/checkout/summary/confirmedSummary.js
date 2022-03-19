@@ -1,6 +1,6 @@
-import InfoPanel from '../../infoPanel.js';
+import InfoPanel from '../../multipurpose/infoPanel.js';
 
-const ConfirmationSummary = ({ id }) => {
+const ConfirmedSummary = ({ id }) => {
   return (
     <InfoPanel title="Confirmation"
       contents={
@@ -12,4 +12,4 @@ const ConfirmationSummary = ({ id }) => {
   )
 }
 
-export default ConfirmationSummary;
+export default ConfirmedSummary;

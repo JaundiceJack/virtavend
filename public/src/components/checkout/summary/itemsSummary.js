@@ -1,7 +1,9 @@
+// Import basics
 import { Link } from 'react-router-dom';
-import Message from '../../message.js';
-import Item from './item.js';
-import InfoPanel from '../../infoPanel.js';
+// Import Components
+import Message   from '../../multipurpose/message.js';
+import InfoPanel from '../../multipurpose/infoPanel.js';
+import Item      from './item.js';
 
 const ItemsSummary = ({ items }) => {
   return (

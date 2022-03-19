@@ -1,5 +1,5 @@
-import Message from '../../message.js';
-import Header from '../../header.js';
+import Message from '../../multipurpose/message.js';
+import Header from '../../multipurpose/header.js';
 import Button from '../../inputs/button.js';
 
 const TotalSummary = ({ submitOrder,
@@ -33,7 +33,7 @@ const TotalSummary = ({ submitOrder,
           <p className="font-semibold text-white">${shippingPrice}</p>
         </div>
 
-        <Button text="Complete Purchase" color="green"
+        <Button text="Proceed to Payment" color="green"
           disabled={itemsPrice === 0.00}
           onClick={submitOrder} extraClasses="col-span-2"/>
       </div>

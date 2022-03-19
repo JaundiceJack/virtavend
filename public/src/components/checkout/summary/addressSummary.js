@@ -1,8 +1,10 @@
-import InfoPanel from '../../infoPanel.js';
+import InfoPanel from '../../multipurpose/infoPanel.js';
 
-const AddressSummary = ({ shippingAddress, billingAddress, showDelivery=false, deliveryStatus, deliveredOn }) => {
+const AddressSummary = ({ shippingAddress, showDelivery=false, deliveryStatus, deliveredOn }) => {
   return (
     <InfoPanel title="Address"
+      extraClasses="h-full"
+      contentClasses="h-full rounded-b-xl sm:rounded-br-xl sm:rounded-bl-none"
       contents={
         ( <>
           <div className="grid grid-cols-4 gap-x-2 mb-4">
@@ -13,16 +15,6 @@ const AddressSummary = ({ shippingAddress, billingAddress, showDelivery=false, d
               {shippingAddress && shippingAddress.state && shippingAddress.state + ", "}
               {shippingAddress && shippingAddress.zip}{" "}
               {shippingAddress && shippingAddress.country}
-            </p>
-          </div>
-          <div className={"grid grid-cols-4 gap-x-2 "+(showDelivery && "mb-4")}>
-            <p className="text-white mr-1 text-right">Billing:</p>
-            <p className="text-white col-span-3">{billingAddress && billingAddress.address}</p>
-            <p className="text-white col-span-3 col-start-2">
-              {billingAddress && billingAddress.city}{" "}
-              {billingAddress && billingAddress.state && billingAddress.state + ", "}
-              {billingAddress && billingAddress.zip}{" "}
-              {billingAddress && billingAddress.country}
             </p>
           </div>
           {showDelivery &&

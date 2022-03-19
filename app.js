@@ -2,12 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const connect = require('./db/connection.js');
+//const cors = require('cors');
 const { notFound, errorFound } = require('./middleware/errorMW.js')
 dotenv.config();
 
 // Instance the app server and use the internal body parser
 const app = express();
 app.use(express.json());
+
+// Set up cross origin resource sharing
+//app.use(cors());
+
 
 // Instance a mongoDB connection
 connect();
@@ -16,6 +21,7 @@ connect();
 app.use('/api/products', require('./routes/paths/products.js'));
 app.use('/api/orders', require('./routes/paths/orders.js'));
 app.use('/api/user', require('./routes/paths/user.js'));
+app.use('/api/articles', require('./routes/paths/articles.js'));
 
 // Set the PayPal ID route
 app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID));

@@ -1,11 +1,9 @@
 import axios from 'axios';
 import { handleError } from './errorActions.js';
-import { PRODUCT_LIST_REQUEST,
-         PRODUCT_LIST_SUCCESS,
-         PRODUCT_LIST_FAIL,
-         PRODUCT_DETAILS_REQUEST,
-         PRODUCT_DETAILS_SUCCESS,
-         PRODUCT_DETAILS_FAIL, } from './types.js';
+import {
+  PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_LIST_FAIL,
+  PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL
+} from './types.js';
 
 export const getProducts = () => async dispatch => {
   try {
