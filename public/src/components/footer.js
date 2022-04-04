@@ -1,13 +1,21 @@
-import { FaCopyright } from 'react-icons/fa';
+// Import icons
+import { FaRegCopyright } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className={"mx-4 sm:mx-12 bg-gradient-to-t from-gray-900 to-gray-800 " +
-                       "shadow-md h-8 rounded-t-lg flex justify-center " +
-                       "items-center h-12"}>
-      <FaCopyright className="fa fa-copyright text-white text-sm" />
-      <p className="ml-1 font-semibold text-white text-sm">
-        James McNeilan</p>
+    <footer className={`pt-4 `}>
+      <a
+        href="https://www.legidev.com"
+        target="_blank"
+        className={`flex flex-row items-center justify-center
+          font-jose font-semibold text-gray-800`}
+      >
+        <p className="text-center ">James McNeilan</p>
+        <p className="text-right flex flex-row items-center">
+          <FaRegCopyright className="text-gray-800 mx-2 " />
+          2022
+        </p>
+      </a>
     </footer>
   );
 };
