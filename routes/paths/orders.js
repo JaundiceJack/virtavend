@@ -1,7 +1,7 @@
 // Import Libraries
 const express = require('express');
 const router = express.Router();
-const private = require('../../middleware/authMW');
+const { private } = require('../../middleware/authMW');
 const { addOrderItems, getOrderById, getOrders, updateOrderToPaid } =
   require('../actions/orderController.js');
 

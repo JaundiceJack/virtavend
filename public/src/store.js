@@ -3,11 +3,15 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 // Import reducers
 import { userLoginReducer, userRegisterReducer,
-  userDetailsReducer, userUpdateProfileReducer } from './reducers/userReducers';
-import { productListReducer, productDetailsReducer, productFeaturedReducer, productDealReducer } from './reducers/productReducers';
+  userDetailsReducer, userUpdateProfileReducer,
+  userListReducer, userDeleteReducer,
+  userEditReducer } from './reducers/userReducers';
+import { productListReducer, productDetailsReducer,
+  productFeaturedReducer, productDealReducer } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducer';
 import { articleDetailsReducer } from './reducers/articleReducers.js';
-import { orderCreateReducer, orderDetailsReducer, ordersListReducer, orderPayReducer } from './reducers/orderReducers';
+import { orderCreateReducer, orderDetailsReducer,
+  ordersListReducer, orderPayReducer } from './reducers/orderReducers';
 
 // Assign the state names to access reducer variables
 const reducer = combineReducers({
@@ -20,6 +24,9 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  userEdit: userEditReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   ordersList: ordersListReducer,

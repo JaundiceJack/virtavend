@@ -29,7 +29,10 @@ const private = trycatch( async (req, res, next) => {
 
 // Restrict a route to site administrators
 const adminOnly = trycatch( async (req, res, next) => {
-
+  if (req.user && req.user.isAdmin) {
+    next();
+  }
+  else { res.status(401); throw new Error("Admin level access required.")}
 });
 
-module.exports = private;
+module.exports = { private, adminOnly };

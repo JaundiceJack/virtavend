@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { handleError } from './errorActions.js';
-import { USER_LOGIN_REQUEST, USER_LOGIN_FAIL, USER_LOGIN_SUCCESS, USER_LOGOUT,
+import { USER_LOGIN_REQUEST, USER_LOGIN_FAIL, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_LOGIN_ERROR_RESET,
  USER_REGISTER_REQUEST, USER_REGISTER_FAIL, USER_REGISTER_SUCCESS,
  USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL,
  USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_SUCCESS, USER_UPDATE_PROFILE_FAIL,
- ORDERS_LIST_RESET, USER_DETAILS_RESET
-}
-  from './types.js';
+ ORDERS_LIST_RESET, USER_DETAILS_RESET,
+ USER_LIST_REQUEST, USER_LIST_SUCCESS, USER_LIST_FAIL, USER_LIST_RESET,
+ USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DELETE_FAIL,
+ USER_EDIT_REQUEST, USER_EDIT_SUCCESS, USER_EDIT_FAIL
+} from './types.js';
 
 // Send the email & password to the server to try logging in
 export const login = (email, password) => async dispatch => {
@@ -26,6 +28,7 @@ export const logout = () => dispatch => {
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: ORDERS_LIST_RESET });
+  dispatch({ type: USER_LIST_RESET });
 }
 
 // Send the name, email, & password to the server to make a new user
@@ -72,4 +75,54 @@ export const updateUserDetails = (user) => async (dispatch, getState) => {
     dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
   }
   catch (e) { dispatch({ type: USER_UPDATE_PROFILE_FAIL, payload: handleError(e) }) };
+}
+
+// Retrieve a list of all users
+export const getUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_LIST_REQUEST });
+    const { userLogin: { userInfo } } = getState();
+    const config = { headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userInfo.token}`
+    }};
+    const { data } = await axios.get(`/api/user/`, config);
+    dispatch({ type: USER_LIST_SUCCESS, payload: data });
+  }
+  catch (e) { dispatch({ type: USER_LIST_FAIL, payload: handleError(e) }) };
+}
+
+// Remove the selected user
+export const deleteUser = userId => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_DELETE_REQUEST });
+    const { userLogin: { userInfo } } = getState();
+    const config = { headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userInfo.token}`
+    }};
+    const { data } = await axios.delete(`/api/user/${userId}`, config);
+    dispatch({ type: USER_DELETE_SUCCESS, payload: data });
+    dispatch(getUsers());
+  } catch (e) { dispatch({ type: USER_DELETE_FAIL, payload: handleError(e) }) }
+}
+
+// Edit the selected user
+export const editUser = user => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_EDIT_REQUEST });
+    const { userLogin: { userInfo } } = getState();
+    const config = { headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userInfo.token}`
+    }};
+    const { data } = await axios.put(`/api/user/${user._id}`, user, config);
+    dispatch({ type: USER_EDIT_SUCCESS, payload: data });
+    dispatch(getUsers());
+  } catch (e) { dispatch({ type: USER_EDIT_FAIL, payload: handleError(e) }) }
+}
+
+// Clear the login error
+export const resetLoginError = () => dispatch => {
+  dispatch({ type: USER_LOGIN_ERROR_RESET });
 }

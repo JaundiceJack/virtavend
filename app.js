@@ -14,7 +14,6 @@ app.use(express.json());
 // Set up cross origin resource sharing
 //app.use(cors());
 
-
 // Instance a mongoDB connection
 connect();
 

@@ -4,17 +4,18 @@
 // Import router stuff
 import { Route, Switch } from 'react-router-dom';
 // Import Components
-import Home          from './home/_home.js';
-import Products      from './products/viewAll/_products.js';
-import Product       from './products/viewOne/_product.js';
-import Cart          from './cart/_cart.js';
-import Login         from './account/login.js';
-import Profile       from './account/profile.js';
-import Register      from './account/register.js';
-import Shipping      from './checkout/shipping/_shipping.js';
-import PaymentMethod from './checkout/payment/_paymentMethod.js';
-import OrderReview   from './checkout/summary/_orderReview.js';
-import OrderPay      from './checkout/summary/_orderPay.js';
+import Home           from './home/_home.js';
+import Products       from './products/viewAll/_products.js';
+import Product        from './products/viewOne/_product.js';
+import Cart           from './cart/_cart.js';
+import Login          from './account/login.js';
+import Profile        from './account/profile.js';
+import Register       from './account/register.js';
+import Shipping       from './checkout/shipping/_shipping.js';
+import PaymentMethod  from './checkout/payment/_paymentMethod.js';
+import OrderReview    from './checkout/summary/_orderReview.js';
+import OrderPay       from './checkout/summary/_orderPay.js';
+import Administration from './admin/administration.js';
 
 const Routes = () => {
   return (
@@ -31,6 +32,7 @@ const Routes = () => {
         <Route path="/merch/:id"      component={Product} />
         <Route path="/cart/:id?"      component={Cart} />
         <Route path="/order/:id"      component={OrderPay} />
+        <Route path="/admin"          component={Administration} />
       </Switch>
     </main>
   )

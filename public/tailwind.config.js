@@ -14,7 +14,7 @@ module.exports = {
     extend: {
       transform: ['hover', 'group-hover', 'focus'],
       borderWidth: ['hover', 'group-hover', 'focus'],
-      borderRadius: ['group-hover'],
+      borderRadius: ['hover', 'group-hover'],
       width: ['group-hover'],
       display: ['hover', 'group-hover', 'focus'],
       backgroundImage: ['hover', 'group-hover', 'focus'],
