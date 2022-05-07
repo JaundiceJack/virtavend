@@ -2,20 +2,19 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // Import dispatch actions
-import { deleteUser } from '../../actions/userActions.js';
+import { deleteProduct } from '../../actions/productActions.js';
 // Import components
 import Spinner from '../multipurpose/spinner.js';
 import ErrorMessage from '../multipurpose/errorMessage.js';
 import { Button, Modal } from '@mantine/core';
 
-const DeleteUser = ({ opened, setOpened, selectedUser }) => {
+const DeleteProduct = ({ opened, setOpened, selectedProduct }) => {
   // Get loading/error status
-  const { error, loading }
-    = useSelector(state => state.userDelete);
+  const { error, loading } = useSelector(state => state.productDelete);
   // Request deletion from the server
   const dispatch = useDispatch();
   const deleteHandler = async () => {
-    const success = await dispatch(deleteUser(selectedUser._id));
+    const success = await dispatch(deleteProduct(selectedProduct._id));
     if (success) setOpened(false);
   }
 
@@ -24,9 +23,9 @@ const DeleteUser = ({ opened, setOpened, selectedUser }) => {
       opened={opened}
       onClose={() => setOpened(false)}
       title={`Are you sure you want to remove
-        ${selectedUser && selectedUser.name}?`} >
+        ${selectedProduct && selectedProduct.name}?`} >
       {
-        loading ? <Spinner extraClasses="mx-auto my-2" /> :
+        loading ? <Spinner extraClasses="mx-auto my-2"/> :
         <div className="flex justify-evenly">
           <Button color="red" onClick={() => deleteHandler()}>
             Yes
@@ -41,4 +40,4 @@ const DeleteUser = ({ opened, setOpened, selectedUser }) => {
   )
 }
 
-export default DeleteUser;
+export default DeleteProduct;

@@ -93,18 +93,25 @@ export const getUsers = () => async (dispatch, getState) => {
 }
 
 // Remove the selected user
-export const deleteUser = userId => async (dispatch, getState) => {
-  try {
-    dispatch({ type: USER_DELETE_REQUEST });
-    const { userLogin: { userInfo } } = getState();
-    const config = { headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${userInfo.token}`
-    }};
-    const { data } = await axios.delete(`/api/user/${userId}`, config);
-    dispatch({ type: USER_DELETE_SUCCESS, payload: data });
-    dispatch(getUsers());
-  } catch (e) { dispatch({ type: USER_DELETE_FAIL, payload: handleError(e) }) }
+export const deleteUser = userId => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      dispatch({ type: USER_DELETE_REQUEST });
+      const { userLogin: { userInfo } } = getState();
+      const config = { headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }};
+      const { data } = await axios.delete(`/api/user/${userId}`, config);
+      dispatch({ type: USER_DELETE_SUCCESS, payload: data });
+      dispatch(getUsers());
+      resolve(true);
+    } catch (e) {
+      dispatch({ type: USER_DELETE_FAIL, payload: handleError(e) });
+      resolve(false);
+    }
+  })
+
 }
 
 // Edit the selected user

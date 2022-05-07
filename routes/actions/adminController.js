@@ -3,6 +3,7 @@ const genToken = require('../../jwt/generateToken.js');
 
 // Create models
 const User = require('../../models/User.js');
+const Product = require('../../models/Product.js');
 
 // GET: api/user | get all users | private & adminOnly
 const getUsers = trycatch( async (req, res) => {
@@ -51,4 +52,48 @@ const deleteUser = trycatch( async (req, res) => {
   else { res.status(404); throw new Error("User not found.")}
 });
 
-module.exports = { getUsers, getUser, updateUser, deleteUser };
+// POST: api/products/ | create a new product | private & adminOnly
+const createProduct = trycatch( async (req, res) => {
+  // Validate entry
+  // Save product
+  const product = new Product({
+    name: req.body.name,
+    category: req.body.category,
+    countInStock: req.body.countInStock
+  });
+  const savedProduct = await product.save();
+  // Return it
+  if (savedProduct) res.json(savedProduct)
+  else { res.status(404); throw new Error("Unable to save new product.")}
+});
+
+// PUT: api/products/:id | update the product's information | private & adminOnly
+const updateProduct = trycatch( async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    product.name = req.body.name || product.name;
+    product.category = req.body.category || product.category;
+    product.countInStock = req.body.countInStock || product.countInStock;
+
+    const updatedProduct = await product.save();
+    res.json({
+      _id: updatedProduct._id,
+      name: updatedProduct.name,
+      category: updatedProduct.category,
+      countInStock: updatedProduct.countInStock
+    });
+  }
+  else { res.status(404); throw new Error("Product not found.")}
+});
+
+// DELETE: api/products/id | remove a product by id | private & adminOnly
+const deleteProduct = trycatch( async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    await product.remove();
+    res.json({ message: "Product removed." });
+  }
+  else { res.status(404); throw new Error("Requested product not found."); };
+});
+
+module.exports = { getUsers, getUser, updateUser, deleteUser, updateProduct, deleteProduct };

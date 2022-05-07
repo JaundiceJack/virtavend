@@ -2,18 +2,21 @@ import {
   PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_LIST_FAIL,
   PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL,
   PRODUCT_FEATURED_REQUEST, PRODUCT_FEATURED_SUCCESS, PRODUCT_FEATURED_FAIL,
-  PRODUCT_DEAL_REQUEST, PRODUCT_DEAL_SUCCESS, PRODUCT_DEAL_FAIL
+  PRODUCT_DEAL_REQUEST, PRODUCT_DEAL_SUCCESS, PRODUCT_DEAL_FAIL,
+  PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_FAIL,
+  PRODUCT_EDIT_REQUEST, PRODUCT_EDIT_SUCCESS, PRODUCT_EDIT_FAIL,
+  PRODUCT_ADD_REQUEST, PRODUCT_ADD_SUCCESS, PRODUCT_ADD_FAIL,
 } from '../actions/types.js';
 
 const initialList = { products: [], loading: false, error: null };
 export const productListReducer = (state = initialList, action) => {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
-      return { loading: true }
+      return { ...state, loading: true }
     case PRODUCT_LIST_SUCCESS:
-      return { loading: false, products: action.payload }
+      return { ...state, loading: false, products: action.payload }
     case PRODUCT_LIST_FAIL:
-      return { loading: false, error: action.payload }
+      return { ...state, loading: false, error: action.payload }
     default:
       return state
   };
@@ -27,6 +30,48 @@ export const productDetailsReducer = (state = initialDetails, action) => {
     case PRODUCT_DETAILS_SUCCESS:
       return { ...state, loading: false, product: action.payload }
     case PRODUCT_DETAILS_FAIL:
+      return { ...state, loading: false, error: action.payload }
+    default:
+      return state
+  };
+};
+
+const initialDelete = { message: null, loading: false, error: null };
+export const productDeleteReducer = (state = initialDelete, action) => {
+  switch (action.type) {
+    case PRODUCT_DELETE_REQUEST:
+      return { ...state, loading: true }
+    case PRODUCT_DELETE_SUCCESS:
+      return { ...state, loading: false, message: action.payload }
+    case PRODUCT_DELETE_FAIL:
+      return { ...state, loading: false, error: action.payload }
+    default:
+      return state
+  };
+};
+
+const initialEdit = { product: { reviews: [] }, loading: false, error: null };
+export const productEditReducer = (state = initialEdit, action) => {
+  switch (action.type) {
+    case PRODUCT_EDIT_REQUEST:
+      return { ...state, loading: true }
+    case PRODUCT_EDIT_SUCCESS:
+      return { ...state, loading: false, product: action.payload }
+    case PRODUCT_EDIT_FAIL:
+      return { ...state, loading: false, error: action.payload }
+    default:
+      return state
+  };
+};
+
+const initialAdd = { product: { reviews: [] }, loading: false, error: null };
+export const productAddReducer = (state = initialAdd, action) => {
+  switch (action.type) {
+    case PRODUCT_ADD_REQUEST:
+      return { ...state, loading: true }
+    case PRODUCT_ADD_SUCCESS:
+      return { ...state, loading: false, product: action.payload }
+    case PRODUCT_ADD_FAIL:
       return { ...state, loading: false, error: action.payload }
     default:
       return state

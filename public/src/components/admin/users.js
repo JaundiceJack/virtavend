@@ -15,17 +15,21 @@ import DeleteUser from './deleteUser.js';
 import { FaRegTrashAlt, FaEdit } from 'react-icons/fa';
 
 const Users = ({ history }) => {
-
+  // Store the clicked user to pass to the modals
   const [selectedUser, setSelectedUser] = useState(null);
+  // Set modal view states
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-
-  const userList = useSelector(state => state.userList);
-  const { users } = userList;
+  // Get the redux variables
+  const { users, loading, error }
+    = useSelector(state => state.userList);
 
   return (
-    <InfoPanel title="Users" extraClasses="h-full" contentClasses="h-full rounded-b-xl"
+    <InfoPanel title="Users" extraClasses="h-full" contentClasses="h-full "
       contents={
+        loading ? <Spinner /> :
+        error ? <ErrorMessage error={error} /> :
+        users.length === 0 ? <p>No users to view.</p> :
         <div>
           <div className={`h-10 w-full grid grid-cols-4
             items-center mb-2`}>
@@ -61,8 +65,10 @@ const Users = ({ history }) => {
             })
           }
 
-          <DeleteUser opened={deleteModal} setOpened={setDeleteModal} selectedUser={selectedUser} />
-          <EditUser opened={editModal} setOpened={setEditModal} selectedUser={selectedUser} />
+          <DeleteUser opened={deleteModal}
+            setOpened={setDeleteModal} selectedUser={selectedUser} />
+          <EditUser opened={editModal}
+            setOpened={setEditModal} selectedUser={selectedUser} />
         </div>
       }
     />
