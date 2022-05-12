@@ -5,7 +5,8 @@ import {
   PRODUCT_DEAL_REQUEST, PRODUCT_DEAL_SUCCESS, PRODUCT_DEAL_FAIL,
   PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_FAIL,
   PRODUCT_EDIT_REQUEST, PRODUCT_EDIT_SUCCESS, PRODUCT_EDIT_FAIL,
-  PRODUCT_ADD_REQUEST, PRODUCT_ADD_SUCCESS, PRODUCT_ADD_FAIL,
+  PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESS, PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_RESET,
 } from '../actions/types.js';
 
 const initialList = { products: [], loading: false, error: null };
@@ -67,12 +68,14 @@ export const productEditReducer = (state = initialEdit, action) => {
 const initialAdd = { product: { reviews: [] }, loading: false, error: null };
 export const productAddReducer = (state = initialAdd, action) => {
   switch (action.type) {
-    case PRODUCT_ADD_REQUEST:
+    case PRODUCT_CREATE_REQUEST:
       return { ...state, loading: true }
-    case PRODUCT_ADD_SUCCESS:
+    case PRODUCT_CREATE_SUCCESS:
       return { ...state, loading: false, product: action.payload }
-    case PRODUCT_ADD_FAIL:
+    case PRODUCT_CREATE_FAIL:
       return { ...state, loading: false, error: action.payload }
+    case PRODUCT_CREATE_RESET:
+      return initialAdd
     default:
       return state
   };

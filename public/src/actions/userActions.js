@@ -7,7 +7,8 @@ import { USER_LOGIN_REQUEST, USER_LOGIN_FAIL, USER_LOGIN_SUCCESS, USER_LOGOUT, U
  ORDERS_LIST_RESET, USER_DETAILS_RESET,
  USER_LIST_REQUEST, USER_LIST_SUCCESS, USER_LIST_FAIL, USER_LIST_RESET,
  USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DELETE_FAIL,
- USER_EDIT_REQUEST, USER_EDIT_SUCCESS, USER_EDIT_FAIL
+ USER_EDIT_REQUEST, USER_EDIT_SUCCESS, USER_EDIT_FAIL,
+ TOKEN_VALIDATE_REQUEST, TOKEN_VALIDATE_SUCCESS, TOKEN_VALIDATE_FAIL
 } from './types.js';
 
 // Send the email & password to the server to try logging in
@@ -47,16 +48,22 @@ export const register = (name, email, password) => async dispatch => {
  };
 }
 
+// Create a configuration with the user's token
+const tokenConfig = (getState) => {
+  const { userLogin: { userInfo } } = getState();
+  const config = { headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${userInfo.token}`
+  }};
+
+  return config;
+}
+
 // Retrieve the current user's information
 export const getUserDetails = id => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_DETAILS_REQUEST });
-    const { userLogin: { userInfo } } = getState();
-    const config = { headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${userInfo.token}`
-    }};
-    const { data } = await axios.get(`/api/user/${id}`, config);
+    const { data } = await axios.get(`/api/user/${id}`, tokenConfig(getState));
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
   }
   catch (e) { dispatch({ type: USER_DETAILS_FAIL, payload: handleError(e) }) };
@@ -66,12 +73,7 @@ export const getUserDetails = id => async (dispatch, getState) => {
 export const updateUserDetails = (user) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
-    const { userLogin: { userInfo } } = getState();
-    const config = { headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${userInfo.token}`
-    }};
-    const { data } = await axios.put('/api/user/profile', user, config);
+    const { data } = await axios.put('/api/user/profile', user, tokenConfig(getState));
     dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
   }
   catch (e) { dispatch({ type: USER_UPDATE_PROFILE_FAIL, payload: handleError(e) }) };
@@ -81,12 +83,7 @@ export const updateUserDetails = (user) => async (dispatch, getState) => {
 export const getUsers = () => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_LIST_REQUEST });
-    const { userLogin: { userInfo } } = getState();
-    const config = { headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${userInfo.token}`
-    }};
-    const { data } = await axios.get(`/api/user/`, config);
+    const { data } = await axios.get(`/api/user/`, tokenConfig(getState));
     dispatch({ type: USER_LIST_SUCCESS, payload: data });
   }
   catch (e) { dispatch({ type: USER_LIST_FAIL, payload: handleError(e) }) };
@@ -97,12 +94,7 @@ export const deleteUser = userId => (dispatch, getState) => {
   return new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: USER_DELETE_REQUEST });
-      const { userLogin: { userInfo } } = getState();
-      const config = { headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`
-      }};
-      const { data } = await axios.delete(`/api/user/${userId}`, config);
+      const { data } = await axios.delete(`/api/user/${userId}`, tokenConfig(getState));
       dispatch({ type: USER_DELETE_SUCCESS, payload: data });
       dispatch(getUsers());
       resolve(true);
@@ -118,12 +110,7 @@ export const deleteUser = userId => (dispatch, getState) => {
 export const editUser = user => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_EDIT_REQUEST });
-    const { userLogin: { userInfo } } = getState();
-    const config = { headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${userInfo.token}`
-    }};
-    const { data } = await axios.put(`/api/user/${user._id}`, user, config);
+    const { data } = await axios.put(`/api/user/${user._id}`, user, tokenConfig(getState));
     dispatch({ type: USER_EDIT_SUCCESS, payload: data });
     dispatch(getUsers());
   } catch (e) { dispatch({ type: USER_EDIT_FAIL, payload: handleError(e) }) }
@@ -132,4 +119,22 @@ export const editUser = user => async (dispatch, getState) => {
 // Clear the login error
 export const resetLoginError = () => dispatch => {
   dispatch({ type: USER_LOGIN_ERROR_RESET });
+}
+
+// Check that a given token is still valid
+export const validateToken = token => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      dispatch({ type: TOKEN_VALIDATE_REQUEST });
+      const { data } = await axios.post('/api/user/validate', { token }, tokenConfig(getState));
+      dispatch({ type: TOKEN_VALIDATE_SUCCESS });
+      if (data && data.exp && data.exp < Date.now()) resolve(true)
+      else resolve(false)
+    }
+    catch (e) {
+      dispatch({ type: TOKEN_VALIDATE_FAIL, payload: handleError(e) });
+      dispatch(logout());
+      resolve(false);
+    };
+  })
 }

@@ -58,6 +58,10 @@ const createProduct = trycatch( async (req, res) => {
   // Save product
   const product = new Product({
     name: req.body.name,
+    price: req.body.price,
+    description: req.body.description,
+    image: req.body.image,
+    brand: req.body.brand,
     category: req.body.category,
     countInStock: req.body.countInStock
   });
@@ -72,16 +76,15 @@ const updateProduct = trycatch( async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) {
     product.name = req.body.name || product.name;
+    product.price = req.body.price || product.price;
+    product.description = req.body.description || product.description;
+    product.image = req.body.image || product.image;
+    product.brand = req.body.brand || product.brand;
     product.category = req.body.category || product.category;
-    product.countInStock = req.body.countInStock || product.countInStock;
+    product.countInStock = req.body.countInStock;
 
     const updatedProduct = await product.save();
-    res.json({
-      _id: updatedProduct._id,
-      name: updatedProduct.name,
-      category: updatedProduct.category,
-      countInStock: updatedProduct.countInStock
-    });
+    res.json(updatedProduct);
   }
   else { res.status(404); throw new Error("Product not found.")}
 });

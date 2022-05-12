@@ -1,5 +1,6 @@
 const trycatch = require('express-async-handler');
 const genToken = require('../../jwt/generateToken.js');
+const jwt = require('jsonwebtoken');
 
 // Create models
 const User = require('../../models/User.js');
@@ -73,5 +74,10 @@ const updateProfile = trycatch( async (req, res) => {
   else { res.status(404); throw new Error("User not found.")}
 });
 
+const validateToken = trycatch( async (req, res) => {
+  const valid = await jwt.verify(req.body.token, process.env.JWT_SECRET);
+  if (valid) res.json(valid)
+  else { res.status(400); throw new Error("Invalid token."); }
+})
 
-module.exports = { loginUser, getProfile, registerUser, updateProfile };
+module.exports = { loginUser, getProfile, registerUser, updateProfile, validateToken };

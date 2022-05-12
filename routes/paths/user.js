@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { private, adminOnly } = require('../../middleware/authMW');
-const { loginUser, getProfile, updateProfile, registerUser }
+const { loginUser, getProfile, updateProfile, registerUser, validateToken }
   = require('../actions/userController.js');
 const { getUsers, getUser, updateUser, deleteUser }
   = require('../actions/adminController.js');
@@ -27,5 +27,8 @@ router.route('/:id')
   .get(private, adminOnly, getUser)
   .put(private, adminOnly, updateUser)
   .delete(private, adminOnly, deleteUser);
+// POST: api/user/validate | validate the given token | private
+router.route('/validate')
+  .post(private, validateToken);
 
 module.exports = router;

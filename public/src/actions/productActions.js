@@ -5,7 +5,7 @@ import {
   PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL,
   PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_FAIL,
   PRODUCT_EDIT_REQUEST, PRODUCT_EDIT_SUCCESS, PRODUCT_EDIT_FAIL,
-  PRODUCT_ADD_REQUEST, PRODUCT_ADD_SUCCESS, PRODUCT_ADD_FAIL,
+  PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESS, PRODUCT_CREATE_FAIL,
 } from './types.js';
 
 export const getProducts = () => async dispatch => {
@@ -51,7 +51,6 @@ export const deleteProduct = productId => (dispatch, getState) => {
       resolve(false);
      }
   })
-
 }
 
 // Edit the selected product
@@ -67,9 +66,9 @@ export const editProduct = product => async (dispatch, getState) => {
 // Create a new product
 export const addProduct = product => async (dispatch, getState) => {
   try {
-    dispatch({ type: PRODUCT_ADD_REQUEST });
+    dispatch({ type: PRODUCT_CREATE_REQUEST });
     const { data } = await axios.post(`/api/products/`, product, tokenConfig(getState));
-    dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
+    dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
     dispatch(getProducts());
-  } catch (e) { dispatch({ type: PRODUCT_ADD_FAIL, payload: handleError(e) }) }
+  } catch (e) { dispatch({ type: PRODUCT_CREATE_FAIL, payload: handleError(e) }) }
 }

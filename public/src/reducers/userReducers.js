@@ -5,11 +5,12 @@ import {
   USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_SUCCESS, USER_UPDATE_PROFILE_FAIL,
   USER_LIST_REQUEST, USER_LIST_SUCCESS, USER_LIST_FAIL, USER_LIST_RESET,
   USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DELETE_FAIL,
-  USER_EDIT_REQUEST, USER_EDIT_SUCCESS, USER_EDIT_FAIL
+  USER_EDIT_REQUEST, USER_EDIT_SUCCESS, USER_EDIT_FAIL,
+  TOKEN_VALIDATE_REQUEST, TOKEN_VALIDATE_SUCCESS, TOKEN_VALIDATE_FAIL
 } from '../actions/types.js';
 
 // User Login Reducer
-const initialUser = { userInfo: {}, loading: false, error: null }
+const initialUser = { userInfo: null, loading: false, error: null }
 export const userLoginReducer = (state = initialUser, action) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
@@ -17,11 +18,11 @@ export const userLoginReducer = (state = initialUser, action) => {
     case USER_LOGIN_SUCCESS:
       return { loading: false, userInfo: action.payload }
     case USER_LOGIN_FAIL:
-      return { loading: false, error: action.payload }
+      return { ...state, loading: false, error: action.payload }
     case USER_LOGIN_ERROR_RESET:
       return { ...state, error: null }
     case USER_LOGOUT:
-      return {}
+      return initialUser
     default:
       return state
   };
@@ -120,3 +121,18 @@ export const userEditReducer = (state = initialEdit, action) => {
       return state
   };
 };
+
+// Token Validation Reducer
+const initialValidate = { validating: false, error: null };
+export const userTokenReducer = (state = initialValidate, action) => {
+  switch (action.type) {
+    case TOKEN_VALIDATE_REQUEST:
+      return { validating: true }
+    case TOKEN_VALIDATE_SUCCESS:
+      return { validating: false }
+    case TOKEN_VALIDATE_FAIL:
+      return { validating: false, error: action.payload }
+    default:
+      return state
+  }
+}

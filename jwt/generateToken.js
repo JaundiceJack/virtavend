@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const daysTillExpire = 1;
 
 // Create a token to authenticate user actions
-const generateToken = (id) => { 
+const generateToken = (id) => {
   return jwt.sign(
     { id },
     process.env.JWT_SECRET,
