@@ -22,7 +22,6 @@ const Administration = ({ history }) => {
       else if (!userInfo) history.push('/login')
       else {
         const validToken = await dispatch(validateToken(userInfo.token));
-        console.log(validToken);
         if (validToken) {
           dispatch(getUsers());
           dispatch(getProducts());
@@ -39,7 +38,10 @@ const Administration = ({ history }) => {
         <div className="flex flex-col">
           <Header text="Administration" />
           {
-            (loading || validating) ? <Spinner /> :
+            (loading || validating) ?
+            <div className="p-2 w-full rounded-b-xl bg-gray-500 flex justify-center">
+              <Spinner />
+            </div> :
             <div className="grid grid-cols-1">
               <Users />
               <Products />

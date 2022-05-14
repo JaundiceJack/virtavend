@@ -22,6 +22,10 @@ app.use('/api/products', require('./routes/paths/products.js'));
 app.use('/api/orders', require('./routes/paths/orders.js'));
 app.use('/api/user', require('./routes/paths/user.js'));
 app.use('/api/articles', require('./routes/paths/articles.js'));
+app.use('/api/upload', require('./routes/paths/upload.js'));
+
+// Make the uploads folder static
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // Set the PayPal ID route
 app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID));

@@ -4,11 +4,12 @@ const router = express.Router();
 const { private, adminOnly } = require('../../middleware/authMW');
 const { getProducts, getProductById, getFeaturedProduct, getDealProduct } =
   require('../actions/productsController.js');
-const { deleteProduct, updateProduct } = require('../actions/adminController');
+const { deleteProduct, updateProduct, createProduct } = require('../actions/adminController');
 
 // GET: api/products/ | Retrieve all products | Public
 router.route('/')
-  .get(getProducts);
+  .get(getProducts)
+  .post(private, adminOnly, createProduct)
 // GET: api/products/featured | Retrieve the details for the featured product | Public
 router.route('/featured')
   .get(getFeaturedProduct);

@@ -1,6 +1,7 @@
 // Import basics
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 // Import dispatch action
 import { addProduct } from '../../actions/productActions.js';
 import { PRODUCT_CREATE_RESET } from '../../actions/types.js';
@@ -18,19 +19,67 @@ const AddProduct = ({ opened, setOpened }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(10);
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+  const [file, setFile] = useState(null);
   const [brand, setBrand] = useState("Web");
   const [category, setCategory] = useState("Shirt");
   const [countInStock, setCountInStock] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [creationError, setCreationError] = useState("");
 
   const { loading, error } = useSelector(state => state.productAdd);
 
+  // Submit the new product to the server and close the modal
   const dispatch = useDispatch();
-  const editHandler = e => {
+  const addHandler = async e => {
     e.preventDefault();
-    dispatch(addProduct({ name, category, countInStock }));
-    setOpened(false);
+    try {
+      // Upload the product image first
+      const imagePath = await upload();
+      const product = {
+        name,  price, description,
+        brand, category, countInStock,
+        image: imagePath,
+      }
+      dispatch(addProduct(product));
+      setOpened(false);
+    } catch (e) { setCreationError(e); }
   }
+
+  // Send the image file to the server and wait for a response
+  const upload = () => {
+    return new Promise(async (resolve, reject) => {
+      setUploading(true);
+      try {
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+        const { data } = await axios.post('/api/upload', file, config);
+        // data returned is path to image
+        setUploading(false);
+        resolve(data);
+      } catch (e) {
+        setUploading(false);
+        reject(e);
+      }
+    })
+  }
+
+  // Place the image in the state on file drop
+  const getFile = files => {
+    const formData = new FormData();
+    formData.append('image', files[0]);
+    setFile(formData);
+  }
+
+  // Clear errors
+  const timer = useRef(null);
+  useEffect(() => {
+    if (!timer.current) {
+      timer.current = setTimeout(() => {
+        dispatch({ type: PRODUCT_CREATE_RESET });
+        setCreationError("");
+        timer.current = null;
+      }, [5000]);
+    }
+  }, [dispatch]);
 
   return (
     <Modal
@@ -41,27 +90,35 @@ const AddProduct = ({ opened, setOpened }) => {
       {
         loading ? <Spinner /> :
         error ? <ErrorMessage error={error} /> :
-        <form onSubmit={editHandler} className="flex flex-col">
+        creationError ? <ErrorMessage error={creationError} /> :
+        <form onSubmit={addHandler} className="flex flex-col">
           <TextEntry
             name="name"
             value={name}
             label="Name:"
             labelColor="#111"
             onChange={e => setName(e.target.value)} />
+
           <PriceEntry
             name="price"
             value={price}
             label="Price:"
             labelColor="#111"
             onChange={e => setPrice(e)} />
+
           <AreaEntry
             name="description"
             value={description}
-            label="Description:"
+            label="Details:"
             labelColor="#111"
-            onChange={e => setDescription(e.target.value)}
-          />
-          <ImageEntry />
+            onChange={e => setDescription(e.target.value)} />
+
+          <ImageEntry
+            uploading={uploading}
+            setUploading={setUploading}
+            onUpload={getFile}
+            file={file} />
+
           <TextEntry
             name="brand"
             value={brand}
@@ -75,6 +132,7 @@ const AddProduct = ({ opened, setOpened }) => {
             label="Category:"
             labelColor="#111"
             onChange={e => setCategory(e.target.value)} />
+
           <TextEntry
             name="countInStock"
             value={countInStock}
@@ -84,7 +142,7 @@ const AddProduct = ({ opened, setOpened }) => {
 
           <div className="mt-6 flex justify-evenly">
             <Button type="submit" color="green" >
-              Apply
+              Add
             </Button>
             <Button color="red" onClick={
               () => setOpened(false)}>

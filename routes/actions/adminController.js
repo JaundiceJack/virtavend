@@ -57,6 +57,7 @@ const createProduct = trycatch( async (req, res) => {
   // Validate entry
   // Save product
   const product = new Product({
+    user: req.user._id,
     name: req.body.name,
     price: req.body.price,
     description: req.body.description,
@@ -99,4 +100,4 @@ const deleteProduct = trycatch( async (req, res) => {
   else { res.status(404); throw new Error("Requested product not found."); };
 });
 
-module.exports = { getUsers, getUser, updateUser, deleteUser, updateProduct, deleteProduct };
+module.exports = { getUsers, getUser, updateUser, deleteUser, updateProduct, deleteProduct, createProduct };
