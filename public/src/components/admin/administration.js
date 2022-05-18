@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 // Import dispatch actions
 import { getUsers, validateToken } from '../../actions/userActions.js';
 import { getProducts } from '../../actions/productActions.js';
+import { getAllOrders } from '../../actions/orderActions.js';
 // Import components
 import Users from './users.js';
 import Products from './products.js';
+import Orders from './orders.js';
 import Header from '../multipurpose/header.js';
 import Spinner from '../multipurpose/spinner.js';
 
@@ -19,13 +21,14 @@ const Administration = ({ history }) => {
   useEffect(() => {
     const relog = async () => {
       if (userInfo && !userInfo.isAdmin) history.push('/login');
-      else if (!userInfo) history.push('/login')
+      else if (!userInfo) history.push('/login?redirect=admin')
       else {
         const validToken = await dispatch(validateToken(userInfo.token));
         if (validToken) {
           dispatch(getUsers());
           dispatch(getProducts());
-        } else history.push('/login');
+          dispatch(getAllOrders());
+        } else history.push('/login?redirect=admin');
       }
     }
     relog();
@@ -45,6 +48,7 @@ const Administration = ({ history }) => {
             <div className="grid grid-cols-1">
               <Users />
               <Products />
+              <Orders />
             </div>
           }
         </div>

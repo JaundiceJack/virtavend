@@ -34,7 +34,7 @@ const ImageEntry = ({ uploading=false, setUploading, onUpload, file }) => {
   const theme = useMantineTheme();
   return (
     <div className="grid grid-cols-3">
-      <p className="font-semibold ml-auto mr-2">Images:</p>
+      <p className="font-semibold ml-auto mr-2">Image:</p>
       <Dropzone
         onDrop={(files) => onUpload(files)}
         onReject={(files) => console.log('rejected files', files)}

@@ -40,7 +40,7 @@ const getOrderById = trycatch( async (req, res) => {
 })
 
 // GET: /api/orders/ | Retrieve all of the user's orders | Private
-const getOrders = trycatch( async (req, res) => {
+const getUserOrders = trycatch( async (req, res) => {
   const orders = await Order.find({user: req.user._id});
   if (orders) res.status(200).json(orders);
   else { res.status(404); throw new Error("User orders not found.")};
@@ -64,4 +64,4 @@ const updateOrderToPaid = trycatch( async (req, res) => {
   else { res.status(404); throw new Error("Order not found.") }
 })
 
-module.exports = { addOrderItems, getOrderById, getOrders, updateOrderToPaid };
+module.exports = { addOrderItems, getOrderById, getUserOrders, updateOrderToPaid };

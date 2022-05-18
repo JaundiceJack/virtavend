@@ -23,6 +23,7 @@ app.use('/api/orders', require('./routes/paths/orders.js'));
 app.use('/api/user', require('./routes/paths/user.js'));
 app.use('/api/articles', require('./routes/paths/articles.js'));
 app.use('/api/upload', require('./routes/paths/upload.js'));
+app.use('/api/admin', require('./routes/paths/admin.js'));
 
 // Make the uploads folder static
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));

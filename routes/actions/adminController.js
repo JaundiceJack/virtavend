@@ -4,6 +4,7 @@ const genToken = require('../../jwt/generateToken.js');
 // Create models
 const User = require('../../models/User.js');
 const Product = require('../../models/Product.js');
+const Order = require('../../models/Order.js');
 
 // GET: api/user | get all users | private & adminOnly
 const getUsers = trycatch( async (req, res) => {
@@ -85,7 +86,8 @@ const updateProduct = trycatch( async (req, res) => {
     product.countInStock = req.body.countInStock;
 
     const updatedProduct = await product.save();
-    res.json(updatedProduct);
+    if (updatedProduct) { res.json(updatedProduct); }
+    else { res.status(400); throw new Error("Unable to apply changes."); }
   }
   else { res.status(404); throw new Error("Product not found.")}
 });
@@ -100,4 +102,11 @@ const deleteProduct = trycatch( async (req, res) => {
   else { res.status(404); throw new Error("Requested product not found."); };
 });
 
-module.exports = { getUsers, getUser, updateUser, deleteUser, updateProduct, deleteProduct, createProduct };
+// GET: api/orders/ | Get all orders | private & adminOnly
+const getAllOrders = trycatch( async (req, res) => {
+  const orders = await Order.find({}).populate('user', '_id name');
+  if (orders) res.status(200).json(orders);
+  else { res.status(404); throw new Error("No orders found.")};
+});
+
+module.exports = { getUsers, getUser, updateUser, deleteUser, updateProduct, deleteProduct, createProduct, getAllOrders };

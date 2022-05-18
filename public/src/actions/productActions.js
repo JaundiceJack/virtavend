@@ -33,7 +33,6 @@ const tokenConfig = (getState) => {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${userInfo.token}`
   }};
-
   return config;
 }
 
@@ -42,7 +41,7 @@ export const deleteProduct = productId => (dispatch, getState) => {
   return new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: PRODUCT_DELETE_REQUEST });
-      const { data } = await axios.delete(`/api/products/${productId}`, tokenConfig(getState));
+      const { data } = await axios.delete(`/api/admin/products/${productId}`, tokenConfig(getState));
       dispatch({ type: PRODUCT_DELETE_SUCCESS, payload: data });
       dispatch(getProducts());
       resolve(true);
@@ -57,7 +56,7 @@ export const deleteProduct = productId => (dispatch, getState) => {
 export const editProduct = product => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_EDIT_REQUEST });
-    const { data } = await axios.put(`/api/products/${product._id}`, product, tokenConfig(getState));
+    const { data } = await axios.put(`/api/admin/products/${product._id}`, product, tokenConfig(getState));
     dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });
     dispatch(getProducts());
   } catch (e) { dispatch({ type: PRODUCT_EDIT_FAIL, payload: handleError(e) }) }
@@ -67,7 +66,7 @@ export const editProduct = product => async (dispatch, getState) => {
 export const addProduct = product => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_CREATE_REQUEST });
-    const { data } = await axios.post(`/api/products/`, product, tokenConfig(getState));
+    const { data } = await axios.post(`/api/admin/products/`, product, tokenConfig(getState));
     dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
     dispatch(getProducts());
   } catch (e) { dispatch({ type: PRODUCT_CREATE_FAIL, payload: handleError(e) }) }

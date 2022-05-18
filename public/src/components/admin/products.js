@@ -2,8 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-// Import dispatch actions
-import { getProducts } from '../../actions/productActions.js';
 // Import components
 import InfoPanel from '../multipurpose/infoPanel.js';
 import ErrorMessage from '../multipurpose/errorMessage.js';
@@ -12,12 +10,15 @@ import Header from '../multipurpose/header.js';
 import AddProduct from './addProduct.js';
 import EditProduct from './editProduct.js';
 import DeleteProduct from './deleteProduct.js';
+import { Pagination } from '@mantine/core';
 // Import icons
 import { FaPlus, FaRegTrashAlt, FaEdit } from 'react-icons/fa';
 
 const Products = ({ history }) => {
   // Store the clicked product to pass to the modals
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [activePage, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(5);
   // Set modal view states
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
@@ -28,7 +29,7 @@ const Products = ({ history }) => {
 
   return (
     <InfoPanel title="Products" extraClasses="h-full"
-      contentClasses="h-full rounded-b-xl"
+      contentClasses="h-full"
       contents={
         loading ? <Spinner /> :
         error ? <ErrorMessage error={error} /> :
@@ -39,8 +40,10 @@ const Products = ({ history }) => {
               title="Add a New Product"
               className={`col-span-full mx-auto sm:col-start-4 flex items-center justify-center
                 rounded-full bg-gray-700 hover:bg-gray-500 h-10 w-36 group relative`}>
-              <FaPlus className="absolute transform duration-150 opacity-0 group-hover:opacity-100" color="#ce3" />
-              <p className="text-green-400 font-semibold whitespace-nowrap transform duration-150 opacity-100 group-hover:opacity-0">New Product</p>
+              <FaPlus className="absolute transform duration-150 opacity-0 group-hover:opacity-100" color="#5e7" />
+              <p className="text-green-400 font-semibold whitespace-nowrap transform duration-150 opacity-100 group-hover:opacity-0">
+                New Product
+              </p>
             </button>
           </div>
           <div className={`h-10 w-full hidden sm:grid grid-cols-4 items-center mb-2`}>
@@ -51,7 +54,7 @@ const Products = ({ history }) => {
           </div>
 
           {
-            products.map((product, index) => {
+            products.slice((activePage - 1) * perPage, activePage * perPage).map((product, index) => {
               return (
                 <div key={index} className={`grid sm:grid-cols-4 grid-cols-3 items-center
                   px-2 py-1 mx-1 my-1 gap-2 rounded-lg hover:bg-gray-500 `}>
@@ -82,11 +85,20 @@ const Products = ({ history }) => {
                       <FaRegTrashAlt className="" color="#f55" />
                     </button>
                   </div>
-                  {index !== products.length-1 && <div className="sm:hidden col-span-full my-2 w-full h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>}
+                  {index !== products.length-1 &&
+                    <div className={
+                      `sm:hidden col-span-full my-2 w-full h-px bg-gradient-to-r
+                      from-transparent via-yellow-500 to-transparent`} />
+                  }
                 </div>
               )
             })
           }
+
+          <Pagination className="mx-auto mt-4"
+            page={activePage}
+            onChange={setPage}
+            total={Math.ceil(products.length/perPage)} />
 
           <DeleteProduct opened={deleteModal}
             setOpened={setDeleteModal} selectedProduct={selectedProduct} />

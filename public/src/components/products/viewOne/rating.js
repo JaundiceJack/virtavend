@@ -4,8 +4,8 @@ const Rating = ({value, numReviews}) => {
   const stars = [1,2,3,4,5];
 
   return (
-    <div className={"flex flex-row items-center py-4 px-6 bg-gray-800 " +
-      " border-r border-gray-600 font-semibold border-b border-t border-gray-600"}>
+    <div className={`flex flex-row items-center py-4 px-6 bg-gray-800
+      border-r border-gray-600 font-semibold border-b border-t border-gray-600`}>
 
       <div className="flex flex-row font-semibold text-yellow-400 justify-center mr-2">
         {stars.map( (star, i) => {

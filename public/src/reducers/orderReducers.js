@@ -2,7 +2,8 @@ import {
   ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_CREATE_RESET, ORDER_CREATE_ERROR_RESET,
   ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_FAIL,
   ORDERS_LIST_REQUEST, ORDERS_LIST_SUCCESS, ORDERS_LIST_FAIL, ORDERS_LIST_RESET,
-  ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS, ORDER_PAY_FAIL, ORDER_PAY_RESET
+  ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS, ORDER_PAY_FAIL, ORDER_PAY_RESET,
+  ORDERS_MANAGEMENT_REQUEST, ORDERS_MANAGEMENT_SUCCESS, ORDERS_MANAGEMENT_FAIL, ORDERS_MANAGEMENT_RESET
 } from '../actions/types.js';
 
 const initialOrder = { loading: false, success: false, order: {}, error: null }
@@ -64,6 +65,22 @@ export const orderPayReducer = (state = initialPayment, action) => {
       return { ...state, loading: false, error: action.payload }
     case ORDER_PAY_RESET:
       return { loading: false, success: false, error: null }
+    default:
+      return state
+  }
+}
+
+const initialManagement = { orders: [], loading: false, error: null }
+export const ordersManagementReducer = (state = initialManagement, action) => {
+  switch (action.type) {
+    case ORDERS_MANAGEMENT_REQUEST:
+      return { ...state, loading: true }
+    case ORDERS_MANAGEMENT_SUCCESS:
+      return { ...state, loading: false, orders: action.payload }
+    case ORDERS_MANAGEMENT_FAIL:
+      return { ...state, loading: false, error: action.payload }
+    case ORDERS_MANAGEMENT_RESET:
+      return { orders: [], loading: false, error: null }
     default:
       return state
   }

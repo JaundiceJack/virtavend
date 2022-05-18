@@ -83,7 +83,7 @@ export const updateUserDetails = (user) => async (dispatch, getState) => {
 export const getUsers = () => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_LIST_REQUEST });
-    const { data } = await axios.get(`/api/user/`, tokenConfig(getState));
+    const { data } = await axios.get(`/api/admin/users/`, tokenConfig(getState));
     dispatch({ type: USER_LIST_SUCCESS, payload: data });
   }
   catch (e) { dispatch({ type: USER_LIST_FAIL, payload: handleError(e) }) };
@@ -94,7 +94,7 @@ export const deleteUser = userId => (dispatch, getState) => {
   return new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: USER_DELETE_REQUEST });
-      const { data } = await axios.delete(`/api/user/${userId}`, tokenConfig(getState));
+      const { data } = await axios.delete(`/api/admin/users/${userId}`, tokenConfig(getState));
       dispatch({ type: USER_DELETE_SUCCESS, payload: data });
       dispatch(getUsers());
       resolve(true);
@@ -103,14 +103,13 @@ export const deleteUser = userId => (dispatch, getState) => {
       resolve(false);
     }
   })
-
 }
 
 // Edit the selected user
 export const editUser = user => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_EDIT_REQUEST });
-    const { data } = await axios.put(`/api/user/${user._id}`, user, tokenConfig(getState));
+    const { data } = await axios.put(`/api/admin/users/${user._id}`, user, tokenConfig(getState));
     dispatch({ type: USER_EDIT_SUCCESS, payload: data });
     dispatch(getUsers());
   } catch (e) { dispatch({ type: USER_EDIT_FAIL, payload: handleError(e) }) }

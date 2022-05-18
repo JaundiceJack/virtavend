@@ -12,7 +12,8 @@ import { productListReducer, productDetailsReducer,
 import { cartReducer } from './reducers/cartReducer';
 import { articleDetailsReducer } from './reducers/articleReducers.js';
 import { orderCreateReducer, orderDetailsReducer,
-  ordersListReducer, orderPayReducer } from './reducers/orderReducers';
+  ordersListReducer, orderPayReducer,
+  ordersManagementReducer } from './reducers/orderReducers';
 
 // Assign the state names to access reducer variables
 const reducer = combineReducers({
@@ -32,10 +33,11 @@ const reducer = combineReducers({
   userDelete: userDeleteReducer,
   userEdit: userEditReducer,
   userToken: userTokenReducer,
+  ordersList: ordersListReducer,
+  ordersManagement: ordersManagementReducer,
+  orderPay: orderPayReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
-  ordersList: ordersListReducer,
-  orderPay: orderPayReducer,
   articleDetails: articleDetailsReducer,
 });
 

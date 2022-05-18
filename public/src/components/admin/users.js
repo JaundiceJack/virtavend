@@ -2,8 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-// Import dispatch actions
-import { getUsers } from '../../actions/userActions.js';
 // Import components
 import InfoPanel from '../multipurpose/infoPanel.js';
 import ErrorMessage from '../multipurpose/errorMessage.js';
@@ -11,12 +9,15 @@ import Spinner from '../multipurpose/spinner.js';
 import Header from '../multipurpose/header.js';
 import EditUser from './editUser.js';
 import DeleteUser from './deleteUser.js';
+import { Pagination } from '@mantine/core';
 // Import icons
 import { FaRegTrashAlt, FaEdit } from 'react-icons/fa';
 
 const Users = ({ history }) => {
   // Store the clicked user to pass to the modals
   const [selectedUser, setSelectedUser] = useState(null);
+  const [activePage, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(5);
   // Set modal view states
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
@@ -30,7 +31,7 @@ const Users = ({ history }) => {
         loading ? <Spinner /> :
         error ? <ErrorMessage error={error} /> :
         users.length === 0 ? <p>No users to view.</p> :
-        <div>
+        <div className="flex flex-col">
           <div className={`h-10 w-full hidden sm:grid grid-cols-4
             items-center mb-2`}>
             <p className="text-gray-100 font-semibold border-b-2 border-yellow-700 ">User Name</p>
@@ -39,7 +40,7 @@ const Users = ({ history }) => {
             <p className="text-gray-100 font-semibold border-b-2 border-yellow-400 ">Options</p>
           </div>
           {
-            users.map((user, index) => {
+            users.slice((activePage - 1) * perPage, activePage * perPage).map((user, index) => {
               return (
                 <div key={index} className={`grid sm:grid-cols-4 grid-cols-3 items-center
                   px-2 py-1 mx-1 my-1 gap-2 rounded-lg hover:bg-gray-500 `}>
@@ -76,6 +77,11 @@ const Users = ({ history }) => {
               )
             })
           }
+
+          <Pagination className="mx-auto mt-4"
+            page={activePage}
+            onChange={setPage}
+            total={Math.ceil(users.length/perPage)} />
 
           <DeleteUser opened={deleteModal}
             setOpened={setDeleteModal} selectedUser={selectedUser} />
