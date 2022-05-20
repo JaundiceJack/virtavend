@@ -13,6 +13,8 @@ import Spinner from '../../multipurpose/spinner.js';
 import Message from '../../multipurpose/message.js';
 import Tabs from './tabs.js';
 import Reviews from './reviews.js';
+// Import icons
+import { FaPlus, FaRegTrashAlt, FaEdit } from 'react-icons/fa';
 
 const Product = ({ match, history }) => {
   const [qty, setQty] = useState(1);

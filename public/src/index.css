@@ -84,3 +84,6 @@ p, label, input, select, div { font-family: 'Montserrat', sans-serif;}
 .bg-button {
   background-image: radial-gradient(at center, rgba(50, 60, 76, 1), rgba(17, 24, 39, 1));
 }
+.bg-commenter {
+  background-image: radial-gradient(at center, #cde, #678);
+}
