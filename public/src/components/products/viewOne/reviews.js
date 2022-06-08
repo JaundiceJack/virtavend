@@ -1,23 +1,51 @@
+// Import basics
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { validateToken } from '../../../actions/userActions.js';
 import { capitalize } from '../../../functions/strings.js';
+import { createReview } from '../../../actions/productActions.js';
+import ReviewModal from './reviewModal.js';
 import { FaStarHalfAlt, FaStar, FaRegStar, FaPlus, FaRegTrashAlt, FaEdit } from 'react-icons/fa'
 
 const Reviews = ({ reviews, totalReviews, averageReview }) => {
-  const stars = [1,2,3,4,5];
+  const [addModal, setAddModal] = useState(false);
 
-  // const { userInfo } = useSelector(state => state.userLogin);
-
+  // Check for user login and valid token before opening modal
+  const { userInfo } = useSelector(state => state.userLogin);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const reviewClick = async () => {
+    if (!userInfo) history.push('/login')
+    else {
+      const validToken = await dispatch(validateToken(userInfo.token));
+      if (!validToken) history.push('/login')
+      else setAddModal(true);
+    }
+  }
 
   const tempReviews = [
-    {name: 'i c weiner', rating: 4, comment: 'kinda good'}
+    {name: 'i c weiner', rating: 4, comment: 'kinda good'},
+    {name: 'pooforbrens', rating: 0, comment: 'it no work i put on but skin too big'},
+    {name: 'pooforbrens', rating: 0, comment: 'it no work i put on but skin too big'},
+    {name: 'pooforbrens', rating: 0, comment: 'it no work i put on but skin too big'},
+    {name: 'pooforbrens', rating: 0, comment: 'it no work i put on but skin too big'},
+    {name: 'pooforbrens', rating: 0, comment: 'it no work i put on but skin too big'}
+
   ]
+
+  const stars = [1,2,3,4,5];
 
   return (
     <div className={`bg-gray-700 p-3 sm:rounded-bl-none
       rounded-bl-lg rounded-br-lg flex-grow`}>
-      <div className={`border-2 border-gray-500 h-full rounded-lg flex flex-col`}>
+      <div style={{maxHeight: 32+'rem'}}
+        className={`h-full border-2 border-gray-500 rounded-lg rounded-br-none
+          flex flex-col `}>
         <div className={`flex flex-row items-center justify-center bg-gray-700
           rounded-t p-4 relative h-32 sm:h-28`}>
-          <div className="absolute sm:left-4 left-0 right-0 flex sm:flex-row flex-col items-center w-full">
+          <div className={`absolute sm:left-4 left-0 right-0 flex
+            sm:flex-row flex-col items-center w-full`}>
             <div className={`flex flex-row font-semibold text-yellow-400
               justify-center bg-gray-600 m-2 p-4 rounded-lg`}>
               {stars.map( (star, i) => {
@@ -36,29 +64,34 @@ const Reviews = ({ reviews, totalReviews, averageReview }) => {
               }
             </h3>
           </div>
-
-
-
           <button
             title="Review this product"
+            onClick={reviewClick}
             className={`absolute right-7 h-9 w-9 flex items-center justify-center
               rounded-full bg-gray-600 hover:bg-gray-500 border border-yellow-400`}>
             <FaEdit className="" color="#ec3" />
           </button>
         </div>
 
-        <div className="h-2 w-full bg-gradient-to-b from-transparent via-gray-500 to-transparent" />
+        <div className={`h-1 w-full bg-gradient-to-b from-transparent
+          via-gray-500 to-transparent`}/>
 
-        <div className="bg-gray-600 rounded-b w-full h-82 overflow-y-scroll">
+        <div
+          className="bg-gray-600 rounded-bl w-full h-full overflow-y-scroll">
           {
-            tempReviews.length > 0 ?
-            tempReviews.map((review, index) => {
+            reviews.length > 0 ?
+            reviews.map((review, index) => {
               return (
-                <div key={index} className="flex flex-row m-4">
-                  <div className="flex items-center justify-center bg-commenter px-2 rounded-full mr-2 border border-gray-400">
-                    <p className="font-jose text-center">{capitalize(review.name)}</p>
+                <div key={index} className="grid grid-cols-4 relative m-3">
+                  <div style={{minHeight:40+'px'}}
+                    className={`self-start flex items-center justify-center
+                      bg-commenter rounded-xl mr-2 py-1 px-2 tooltip`}>
+                    <p className="font-jose text-center break-anywhere">
+                      {capitalize(review.name)}
+                    </p>
                   </div>
-                  <div className="flex flex-col bg-white p-2 rounded-lg w-full">
+                  <div className={`col-span-3 flex flex-col bg-white p-2
+                    rounded-lg w-full`}>
                     <div className="flex flex-row mb-1 text-yellow-400">
                       {stars.map( (star, i) => {
                         return review.rating >= i+1 ?
@@ -67,16 +100,21 @@ const Reviews = ({ reviews, totalReviews, averageReview }) => {
                           <FaRegStar key={i} />
                       })}
                     </div>
-                    <div>{review.comment}</div>
+                    <div>
+                      {review.comment}
+                    </div>
                   </div>
-
                 </div>
               )
             }) :
-            <div className="flex items-center justify-center h-full text-white mx-6">Be the first to leave a review!</div>
+            <div className={`flex items-center justify-center h-full text-white mx-6`}>
+              Be the first to leave a review!
+            </div>
           }
         </div>
       </div>
+
+      <ReviewModal opened={addModal} setOpened={setAddModal} />
     </div>
   )
 }

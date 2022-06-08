@@ -1,6 +1,6 @@
-import { TextInput } from '@mantine/core';
+import { Select } from '@mantine/core';
 
-const TextEntry = ({ label, labelColor="#EEE", value, name, onChange, type='text', required=true, extraClasses="mb-3" }) => {
+const SelectEntry = ({ label, labelColor="#EEE", value, name, onChange, required=true, options=[] }) => {
   // Extra input styling for Mantine components
   const inputStyles = {
     label: {
@@ -20,18 +20,18 @@ const TextEntry = ({ label, labelColor="#EEE", value, name, onChange, type='text
   }
 
   return (
-    <TextInput
+    <Select
       label={label}
       name={name}
       value={value}
-      type={type}
       radius="md"
-      size="xs"
+      data={options}
       styles={inputStyles}
       onChange={onChange}
-      className={extraClasses}
-      required={required} />
+      className="mb-3"
+      required={required}
+    />
   )
 }
 
-export default TextEntry;
+export default SelectEntry;

@@ -75,6 +75,7 @@ const createProduct = trycatch( async (req, res) => {
 
 // PUT: api/products/:id | update the product's information | private & adminOnly
 const updateProduct = trycatch( async (req, res) => {
+  const { rating, comment } = req.body;
   const product = await Product.findById(req.params.id);
   if (product) {
     product.name = req.body.name || product.name;

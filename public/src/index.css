@@ -87,3 +87,13 @@ p, label, input, select, div { font-family: 'Montserrat', sans-serif;}
 .bg-commenter {
   background-image: radial-gradient(at center, #cde, #678);
 }
+
+.tooltip::after {
+  content: " ";
+  position: absolute;
+  right: 74.5%; /* To the left of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #89a ;
+}

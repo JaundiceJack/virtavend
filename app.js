@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const connect = require('./db/connection.js');
 const path = require('path');
+const morgan = require('morgan');
 //const cors = require('cors');
 const { notFound, errorFound } = require('./middleware/errorMW.js')
 dotenv.config();
@@ -10,6 +11,9 @@ dotenv.config();
 // Instance the app server and use the internal body parser
 const app = express();
 app.use(express.json());
+
+if (process.env.NODE_ENV === 'development')
+  app.use(morgan('dev'));
 
 // Set up cross origin resource sharing
 //app.use(cors());
