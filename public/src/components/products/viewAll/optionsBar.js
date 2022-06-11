@@ -1,25 +1,32 @@
+// Import basics
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+// Import dispatch actions
 import { getProducts } from "../../../actions/productActions.js";
+// Import components
 import { FaSearch, FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
-import TextEntry from "../../inputs/textEntry.js";
 import { TextInput } from "@mantine/core";
 
 const OptionsBar = () => {
+  // Set a search term and toggle-able item categories
   const [keyword, setKeyword] = useState("");
-
   const categories = ["shirt", "device", "trinket"];
-  const [checked, setChecked] = useState({});
+  const [checked, setChecked] = useState(() => {
+    let initial = {};
+    categories.forEach((category) => (initial[category] = true));
+    return initial;
+  });
 
+  // Send the search query on click/submission
   const history = useHistory();
   const dispatch = useDispatch();
   const onSearch = (e) => {
     e.preventDefault();
-    dispatch(getProducts(keyword));
+    dispatch(getProducts(keyword.trim()));
     if (keyword.trim()) {
-      history.push(`/merch/search/${keyword}`);
+      history.push(`/merch/search/${keyword.trim()}`);
     } else {
       history.push(`/merch`);
     }
@@ -83,6 +90,7 @@ const OptionsBar = () => {
             return (
               <button
                 key={index}
+                type="button"
                 onClick={() => {
                   let flip = { ...checked };
                   flip[cat] = !flip[cat];
