@@ -27,7 +27,12 @@ import {
   REVIEW_CREATE_RESET,
 } from "../actions/types.js";
 
-const initialList = { products: [], loading: false, error: null };
+const initialList = {
+  products: [],
+  categories: { shirt: true, trinket: true, device: true },
+  loading: false,
+  error: null,
+};
 export const productListReducer = (state = initialList, action) => {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
@@ -39,6 +44,7 @@ export const productListReducer = (state = initialList, action) => {
         products: action.payload.products,
         numPages: action.payload.numPages,
         page: action.payload.page,
+        categories: { ...action.payload.categories },
       };
     case PRODUCT_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };

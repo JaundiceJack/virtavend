@@ -21,17 +21,27 @@ import {
   REVIEW_CREATE_FAIL,
 } from "./types.js";
 
-export const getProducts = (keyword = "", page = "") => async (dispatch) => {
-  try {
-    dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get(
-      `/api/products?keyword=${keyword}&page=${page}`
-    );
-    dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-  } catch (e) {
-    dispatch({ type: PRODUCT_LIST_FAIL, payload: handleError(e) });
-  }
-};
+export const getProducts =
+  (keyword = "", page = "", categories = {}) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_LIST_REQUEST });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const body = {
+        keyword,
+        page,
+        categories,
+      };
+      const { data } = await axios.post(`/api/products/search`, body, config);
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+    } catch (e) {
+      dispatch({ type: PRODUCT_LIST_FAIL, payload: handleError(e) });
+    }
+  };
 
 export const getProduct = (id) => async (dispatch) => {
   try {
@@ -77,35 +87,43 @@ export const deleteProduct = (productId) => (dispatch, getState) => {
 };
 
 // Edit the selected product
-export const editProduct = (product) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: PRODUCT_EDIT_REQUEST });
-    const { data } = await axios.put(
-      `/api/admin/products/${product._id}`,
-      product,
-      tokenConfig(getState)
-    );
-    dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });
-    dispatch(getProducts());
-  } catch (e) {
-    dispatch({ type: PRODUCT_EDIT_FAIL, payload: handleError(e) });
-  }
+export const editProduct = (product) => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      dispatch({ type: PRODUCT_EDIT_REQUEST });
+      const { data } = await axios.put(
+        `/api/admin/products/${product._id}`,
+        product,
+        tokenConfig(getState)
+      );
+      dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });
+      dispatch(getProducts());
+      resolve(true);
+    } catch (e) {
+      dispatch({ type: PRODUCT_EDIT_FAIL, payload: handleError(e) });
+      resolve(false);
+    }
+  });
 };
 
 // Create a new product
-export const addProduct = (product) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: PRODUCT_CREATE_REQUEST });
-    const { data } = await axios.post(
-      `/api/admin/products/`,
-      product,
-      tokenConfig(getState)
-    );
-    dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
-    dispatch(getProducts());
-  } catch (e) {
-    dispatch({ type: PRODUCT_CREATE_FAIL, payload: handleError(e) });
-  }
+export const addProduct = (product) => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      dispatch({ type: PRODUCT_CREATE_REQUEST });
+      const { data } = await axios.post(
+        `/api/admin/products/`,
+        product,
+        tokenConfig(getState)
+      );
+      dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
+      dispatch(getProducts());
+      resolve(true);
+    } catch (e) {
+      dispatch({ type: PRODUCT_CREATE_FAIL, payload: handleError(e) });
+      resolve(false);
+    }
+  });
 };
 
 //

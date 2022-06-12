@@ -6,11 +6,11 @@ import axios from "axios";
 import { editProduct } from "../../actions/productActions.js";
 // Import components
 import TextEntry from "../inputs/textEntry.js";
-import RadioEntry from "../inputs/radioEntry.js";
 import Spinner from "../multipurpose/spinner.js";
 import PriceEntry from "../inputs/priceEntry.js";
 import AreaEntry from "../inputs/areaEntry.js";
 import ImageEntry from "../inputs/imageEntry.js";
+import SelectEntry from "../inputs/selectEntry.js";
 import ErrorMessage from "../multipurpose/errorMessage.js";
 import { Button, Modal } from "@mantine/core";
 
@@ -31,7 +31,18 @@ const EditProduct = ({ opened, setOpened, selectedProduct }) => {
   );
   const [uploading, setUploading] = useState(false);
   const [creationError, setCreationError] = useState("");
+  // Get loading/error status
+  const { error, loading } = useSelector((state) => state.productEdit);
 
+  // TODO: extend category system to add/remove custom ones
+  // Define categories
+  const categories = [
+    { label: "Shirt", value: "shirt" },
+    { label: "Device", value: "device" },
+    { label: "Trinket", value: "trinket" },
+  ];
+
+  // TODO: Get the product's current image(s) too
   // Fill form with selected product
   useEffect(() => {
     setName(selectedProduct && selectedProduct.name);
@@ -41,9 +52,6 @@ const EditProduct = ({ opened, setOpened, selectedProduct }) => {
     setCategory(selectedProduct && selectedProduct.category);
     setCountInStock(selectedProduct && selectedProduct.countInStock);
   }, [selectedProduct]);
-
-  // Get loading/error status
-  const { error, loading } = useSelector((state) => state.productEdit);
 
   // Send the edits to the server
   const dispatch = useDispatch();
@@ -62,8 +70,8 @@ const EditProduct = ({ opened, setOpened, selectedProduct }) => {
         countInStock,
         image: imagePath,
       };
-      dispatch(editProduct(product));
-      setOpened(false);
+      const success = await dispatch(editProduct(product));
+      if (success) setOpened(false);
     } catch (e) {
       setCreationError(e);
     }
@@ -112,7 +120,7 @@ const EditProduct = ({ opened, setOpened, selectedProduct }) => {
       title={`Editing ${name}...`}
     >
       {loading ? (
-        <Spinner />
+        <Spinner extraClasses="mx-auto my-2" />
       ) : error ? (
         <ErrorMessage error={error} />
       ) : creationError ? (
@@ -158,12 +166,13 @@ const EditProduct = ({ opened, setOpened, selectedProduct }) => {
             onChange={(e) => setBrand(e.target.value)}
           />
 
-          <TextEntry
+          <SelectEntry
             name="category"
             value={category}
             label="Category:"
             labelColor="#111"
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) => setCategory(e)}
+            options={categories}
           />
 
           <TextEntry

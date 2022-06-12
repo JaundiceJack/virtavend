@@ -3,35 +3,63 @@ const trycatch = require("express-async-handler");
 // Create models
 const Product = require("../../models/Product.js");
 
-// GET: api/products/ | return all products | public
+// POST: api/products/search | Use a post-body with keyword/page/categories to get products | public
 const getProducts = trycatch(async (req, res) => {
+  // Set items per page and get the currently viewed page
   const perPage = 9;
-  const page = Number(req.query.page) || 1;
+  const page = Number(req.body.page) || 1;
 
-  const keyword = req.query.keyword
+  // Loop over the category object to get an array of enabled categories
+  let categoryArr = [];
+  for (const [key, value] of Object.entries(req.body.categories)) {
+    if (value) categoryArr.push(key);
+  }
+
+  // If there is a keyword, find it in the name or description and limit by category
+  // Otherwise just limit by enabled categories
+  const keyword = req.body.keyword
     ? {
-        $or: [
+        $and: [
           {
-            name: {
-              $regex: req.query.keyword,
-              $options: "i",
-            },
+            $or: [
+              {
+                name: {
+                  $regex: req.body.keyword,
+                  $options: "i",
+                },
+              },
+              {
+                description: {
+                  $regex: req.body.keyword,
+                  $options: "i",
+                },
+              },
+            ],
           },
-          {
-            description: {
-              $regex: req.query.keyword,
-              $options: "i",
-            },
-          },
+          { category: { $in: categoryArr } },
         ],
       }
-    : {};
+    : {
+        category: { $in: categoryArr },
+      };
 
+  // Get the total number of results the query will return
   const count = await Product.countDocuments({ ...keyword });
+  // Get the results and limit by page
   const products = await Product.find({ ...keyword })
     .limit(perPage)
     .skip(perPage * (page - 1));
-  res.json({ products, page, numPages: Math.ceil(count / perPage) });
+  // Return the products, page info, & enabled categories
+  res.json({
+    products,
+    page,
+    numPages: Math.ceil(count / perPage),
+    categories: req.body.categories || {
+      shirt: true,
+      trinket: true,
+      device: true,
+    },
+  });
 });
 
 // GET: api/products/id | get one product by id | public

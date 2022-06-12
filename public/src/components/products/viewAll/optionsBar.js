@@ -1,6 +1,6 @@
 // Import basics
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 // Import dispatch actions
 import { getProducts } from "../../../actions/productActions.js";
@@ -9,19 +9,33 @@ import { FaSearch, FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import { TextInput } from "@mantine/core";
 
-const OptionsBar = () => {
+/*
+now that the categories are partially implemented,
+I need to fix the positioning of the search bar
+and i need to convert the products page initial load,
+to use the new getProducts one
+then i can get rid of the GET request one on the front and back
+
+*/
+
+const OptionsBar = ({ queryString = "" }) => {
   // Set a search term and toggle-able item categories
-  const [keyword, setKeyword] = useState("");
-  const categories = ["shirt", "device", "trinket"];
-  const [checked, setChecked] = useState(() => {
-    let initial = {};
-    categories.forEach((category) => (initial[category] = true));
-    return initial;
-  });
+  const [keyword, setKeyword] = useState(queryString);
+  const { categories } = useSelector((state) => state.productList);
+  const catArr = Object.keys(categories);
+
+  // When a category is clicked, update the listed products
+  const dispatch = useDispatch();
+  const onCategoryToggle = (cat) => {
+    const bodyCategories = {
+      ...categories,
+      [cat]: !categories[cat],
+    };
+    dispatch(getProducts(keyword.trim(), "", bodyCategories));
+  };
 
   // Send the search query on click/submission
   const history = useHistory();
-  const dispatch = useDispatch();
   const onSearch = (e) => {
     e.preventDefault();
     dispatch(getProducts(keyword.trim()));
@@ -86,24 +100,21 @@ const OptionsBar = () => {
           className={` h-12 flex flex-row p-2 rounded-lg lg:rounded-l-none
           bg-gray-700`}
         >
-          {categories.map((cat, index) => {
+          {catArr.map((cat, index) => {
             return (
               <button
                 key={index}
                 type="button"
-                onClick={() => {
-                  let flip = { ...checked };
-                  flip[cat] = !flip[cat];
-                  setChecked(flip);
-                }}
+                name={cat}
+                onClick={() => onCategoryToggle(cat)}
                 style={{ background: "radial-gradient(at center, #eee, #cde)" }}
                 className={`flex items-center justify-center px-2 py-4
                     rounded-md transform duration-150 hover:scale-105
-                    ${index !== categories.length - 1 && "mr-2"}`}
+                    ${index !== catArr.length - 1 && "mr-2"}`}
               >
                 <p
                   className={`text-lg font-semibold z-0
-                    ${!checked[cat] && "opacity-50"}`}
+                    ${!categories[cat] && "opacity-50"}`}
                 >
                   {cat.substring(0, 1).toUpperCase() +
                     cat.substring(1, cat.length) +
@@ -112,13 +123,13 @@ const OptionsBar = () => {
                 <FaCheck
                   style={{ top: 2 + "px", right: 3 + "px" }}
                   size="10"
-                  className={`${!checked[cat] && "hidden"}
+                  className={`${!categories[cat] && "hidden"}
                     text-green-500 z-10 absolute`}
                 />
                 <ImCross
                   style={{ top: 2 + "px", right: 3 + "px" }}
                   size="10"
-                  className={`${checked[cat] && "hidden"}
+                  className={`${categories[cat] && "hidden"}
                     text-red-400 z-10 absolute`}
                 />
               </button>

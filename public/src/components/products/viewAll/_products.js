@@ -13,14 +13,14 @@ import { Pagination } from "@mantine/core";
 const Products = ({ history, match }) => {
   // Grab params and global states
   const keyword = match.params.keyword;
-  const { products, loading, error, numPages, page } = useSelector(
+  const { products, loading, error, numPages, page, categories } = useSelector(
     (state) => state.productList
   );
 
   // Get products on page load
   const dispatch = useDispatch();
   useState(() => {
-    dispatch(getProducts(keyword, page));
+    dispatch(getProducts(keyword, page, categories));
   }, [dispatch]);
 
   // Change the page and get the next products
@@ -28,7 +28,7 @@ const Products = ({ history, match }) => {
     keyword
       ? history.push(`/merch/search/${keyword}/page/${e}`)
       : history.push(`/merch/page/${e}`);
-    dispatch(getProducts(keyword, e));
+    dispatch(getProducts(keyword, e, categories));
   };
 
   return (
@@ -41,7 +41,7 @@ const Products = ({ history, match }) => {
         <div
           className={`self-start flex flex-col px-4 sm:px-12 py-7 h-full mx-auto`}
         >
-          <OptionsBar />
+          <OptionsBar queryString={keyword} />
           <div
             className={`w-full h-full grid grid-cols-1 gap-8 justify-items-center 
             sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3`}
