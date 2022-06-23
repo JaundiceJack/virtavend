@@ -22,7 +22,11 @@ import {
 } from "./types.js";
 
 export const getProducts =
-  (keyword = "", page = "", categories = {}) =>
+  (
+    keyword = "",
+    page = "",
+    categories = { shirt: true, trinket: true, device: true }
+  ) =>
   async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });

@@ -29,7 +29,7 @@ const OptionsBar = ({ queryString = "" }) => {
   const history = useHistory();
   const onSearch = (e) => {
     e.preventDefault();
-    dispatch(getProducts(keyword.trim()));
+    dispatch(getProducts(keyword.trim(), "", categories));
     if (keyword.trim()) {
       history.push(`/merch/search/${keyword.trim()}`);
     } else {
