@@ -1,0 +1,24 @@
+so, the order and payment thing
+i need to ensure that an order is successfully created before allowing the 
+payment to go through
+the issue is, the button thing doesn't seem to have a pre-transfer hook 
+where i could ensure an order was made
+it might but probably take a week to figure out
+
+instead, what i can do is...
+i can revert it to like traversy had where the review page takes to payment page
+so that it's 100% created 
+what i wanted was for the order and payment to happen on the same page
+so what if a user makes an order, gets to the payment page, and spaces out
+then i've got a bunch of unpaid orders that the user may or maynot log back in to pay
+
+oh, so what if i use a useEffect to create the order on page load of the payment page
+and if there's an error disable the payment button instructing user to try refreshing the 
+
+thats good but, the user can still get to that page and not pay,
+leaving a blank order which would deplete the stock that i could safely sell,
+and would leave me open to bot attack
+being that they could order all items without paying and deplete the stock from the front end
+
+it would be so much cooler if i could just make a pre-order thing on the button.
+uhg
